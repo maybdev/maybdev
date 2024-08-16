@@ -1,0 +1,194 @@
+<style>
+  @font-face {
+      font-family: 'p8';
+      src: url('font\\PICO-8.ttf') format('truetype');
+  }
+
+  .center {
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+  }
+
+  .pfp {
+    max-width: 256px;
+    max-height: 256px;
+    width: 256px;
+    height: 256px;
+    margin-top: 30px;
+    cursor: url("cur\\pointer_up.png"), default;
+  }
+
+  .pft {
+    font-family: "p8";
+    font-size: 40px;
+    color: black;
+  }
+
+  .pfst {
+    font-family: "p8";
+    font-size: 15px;
+    color: black;
+  }
+
+  .pfp8 {
+    font-family: "p8";
+    font-size: 10px;
+    color: rgb(0, 0, 0);
+  }
+
+  html,body {
+    user-select: none;
+    background-color: floralwhite;
+    cursor: url("cur\\mouse.png"), default;
+  }
+
+  #static-guy {
+    max-width: 128px;
+    max-height: 128px;
+    width: 128px;
+    height: 128px;
+    position: fixed;
+    bottom: 0;
+    left: 80px;
+    transform: translateX(-50%);
+  }
+
+  .guytainer {
+    position: relative;
+    height: 128px;
+  }
+</style>
+
+<link rel="icon" href="img\\maybdev.2d.png">
+
+<title>maybdev</title>
+
+<div class="center">
+  <img class="pfp" src="img\\maybdev.2d.png" draggable="false" id="pfp">
+  <div>
+    <p class="pft">maybdev L</p>
+    <p class="pfst">hi, maybdev here..</p><br>
+    <p class="pfp8" style="color: #BE1250; font-size: 15px;">(i love)</p>
+    <p class="pfp8" id="pico8" style="color: #1D2B53;">pico-8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L</p>
+    <p class="pfp8" id="picotron">picotron</p>
+    <p class="pfp8" id="python">python</p>
+    <p class="pfp8" id="javascript">javascript</p>
+  </div>
+</div>
+
+<div class="guytainer">
+  <img id="static-guy" src="img\\maybdev.2d.png" draggable="false">
+</div>
+
+<script>
+  document.addEventListener('contextmenu', function(event) {
+      event.preventDefault();
+  });
+
+  var upaudio = new Audio('audio\\up.wav');
+  var downaudio = new Audio('audio\\down.wav');
+  var foot = new Audio('audio\\foot.wav');
+  upaudio.volume = 0.5;
+  downaudio.volume = 0.5;
+  foot.volume = 1;
+  foot.currentTime = 100;
+
+  pfp8 = 1;
+  key = false;
+  guyx = 80;
+  function arrowkeys(event) {
+    move = false
+    switch(event.key) {
+      case "ArrowUp":
+        if (key == true) {return}
+        key = true;
+        pfp8 -= 1;
+        upaudio.currentTime = 0;
+        upaudio.play();
+        break;
+      case "ArrowDown":
+        if (key == true) {return}
+        key = true;
+        pfp8 += 1;
+        downaudio.currentTime = 0;
+        downaudio.play();
+        break;
+      case "ArrowRight":
+        guyx += 4;
+        move = true
+        break;
+      case "ArrowLeft":
+        guyx -= 4;
+        move = true
+        break;
+      default:
+        break;
+    }
+    if (guyx < 32) {
+      guyx = 32;
+    }
+    if (guyx > window.innerWidth-32) {
+      guyx = window.innerWidth-32;
+    }
+    document.getElementById("static-guy").style.left = `${guyx}px`;
+    console.log(foot.currentTime)
+    if (move == true) {
+      document.getElementById("static-guy").src = "img\\maybdev.2d." + ((Math.floor(parseFloat(new Date().getSeconds() + "." + new Date().getMilliseconds())*4)%2)+1) + ".png";
+      if (foot.currentTime >= 0.5) {
+        foot.currentTime = 0;
+        foot.play();
+      }
+    }
+    if (pfp8 > 4) {
+      pfp8 = 1
+    }
+    if (pfp8 < 1) {
+      pfp8 = 4
+    }
+    if (pfp8 == 1) {
+      document.getElementById("pico8").innerHTML = "pico-8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L";
+      document.getElementById("pico8").style.color = "#1D2B53";
+    } else {
+      document.getElementById("pico8").innerText = "pico-8";
+      document.getElementById("pico8").style.color = "black";
+    }
+    if (pfp8 == 2) {
+      document.getElementById("picotron").innerHTML = "picotron&nbsp;&nbsp;&nbsp;L";
+      document.getElementById("picotron").style.color = "#1D2B53";
+    } else {
+      document.getElementById("picotron").innerText = "picotron";
+      document.getElementById("picotron").style.color = "black";
+    }
+    if (pfp8 == 3) {
+      document.getElementById("python").innerHTML = "python&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L";
+      document.getElementById("python").style.color = "#1D2B53";
+    } else {
+      document.getElementById("python").innerText = "python";
+      document.getElementById("python").style.color = "black";
+    }
+    if (pfp8 == 4) {
+      document.getElementById("javascript").innerHTML = "javascript&nbsp;L";
+      document.getElementById("javascript").style.color = "#1D2B53";
+    } else {
+      document.getElementById("javascript").innerText = "javascript";
+      document.getElementById("javascript").style.color = "black";
+    }
+  }
+
+  function resetkey() {
+    key = false
+    document.getElementById("static-guy").src = "img\\maybdev.2d.png";
+  }
+
+  document.addEventListener('keydown', arrowkeys);
+  document.addEventListener('keyup', resetkey);
+
+  document.getElementById("pfp").addEventListener('mousedown', () => {
+    document.getElementById("pfp").style.cursor = 'url("cur/pointer_down.png"), default';
+  });
+
+  document.getElementById("pfp").addEventListener('mouseup', () => {
+    document.getElementById("pfp").style.cursor = 'url("cur/pointer_up.png"), default';
+  });
+</script>
