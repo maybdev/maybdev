@@ -22,19 +22,19 @@
   .pft {
     font-family: "p8";
     font-size: 40px;
-    color: black;
+    color: #291814;
   }
 
   .pfst {
     font-family: "p8";
     font-size: 15px;
-    color: black;
+    color: #291814;
   }
 
   .pfp8 {
     font-family: "p8";
     font-size: 10px;
-    color: rgb(0, 0, 0);
+    color: #291814;
   }
 
   html,body {
@@ -52,6 +52,7 @@
     bottom: 0;
     left: 80px;
     transform: translateX(-50%);
+    cursor: url("cur\\pointer_up.png"), default;
   }
 
   .guytainer {
@@ -69,7 +70,7 @@
   <div>
     <p class="pft">maybdev L</p>
     <p class="pfst">hi, maybdev here..</p><br>
-    <p class="pfp8" style="color: #BE1250; font-size: 15px;">(i love)</p>
+    <p class="pfp8" style="color: #BE1250; font-size: 15px;">(i do)</p>
     <p class="pfp8" id="pico8" style="color: #1D2B53;">pico-8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L</p>
     <p class="pfp8" id="picotron">picotron</p>
     <p class="pfp8" id="python">python</p>
@@ -99,31 +100,51 @@
   guyx = 80;
   function arrowkeys(event) {
     move = false
-    switch(event.key) {
-      case "ArrowUp":
-        if (key == true) {return}
-        key = true;
-        pfp8 -= 1;
-        upaudio.currentTime = 0;
-        upaudio.play();
-        break;
-      case "ArrowDown":
-        if (key == true) {return}
-        key = true;
-        pfp8 += 1;
-        downaudio.currentTime = 0;
-        downaudio.play();
-        break;
-      case "ArrowRight":
-        guyx += 4;
-        move = true
-        break;
-      case "ArrowLeft":
-        guyx -= 4;
-        move = true
-        break;
-      default:
-        break;
+    if (event.type === "keydown") {
+        switch (event.key) {
+            case "ArrowUp":
+                if (key == true) { return; }
+                key = true;
+                pfp8 -= 1;
+                upaudio.currentTime = 0;
+                upaudio.play();
+                break;
+            case "ArrowDown":
+                if (key == true) { return; }
+                key = true;
+                pfp8 += 1;
+                downaudio.currentTime = 0;
+                downaudio.play();
+                break;
+            case "ArrowRight":
+                guyx += 4;
+                move = true;
+                break;
+            case "ArrowLeft":
+                guyx -= 4;
+                move = true;
+                break;
+            default:
+                break;
+        }
+    } else if (event.type === "wheel") {
+        if (event.deltaY < 0) {
+            if (key == true) { return; }
+            key = true;
+            pfp8 -= 1;
+            upaudio.currentTime = 0;
+            upaudio.play();
+        } else if (event.deltaY > 0) {
+            if (key == true) { return; }
+            key = true;
+            pfp8 += 1;
+            downaudio.currentTime = 0;
+            downaudio.play();
+        }
+        event.preventDefault();
+        setTimeout(() => {
+          key = false;
+        }, 200);
     }
     if (guyx < 32) {
       guyx = 32;
@@ -151,28 +172,28 @@
       document.getElementById("pico8").style.color = "#1D2B53";
     } else {
       document.getElementById("pico8").innerText = "pico-8";
-      document.getElementById("pico8").style.color = "black";
+      document.getElementById("pico8").style.color = "#291814";
     }
     if (pfp8 == 2) {
       document.getElementById("picotron").innerHTML = "picotron&nbsp;&nbsp;&nbsp;L";
       document.getElementById("picotron").style.color = "#1D2B53";
     } else {
       document.getElementById("picotron").innerText = "picotron";
-      document.getElementById("picotron").style.color = "black";
+      document.getElementById("picotron").style.color = "#291814";
     }
     if (pfp8 == 3) {
       document.getElementById("python").innerHTML = "python&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L";
       document.getElementById("python").style.color = "#1D2B53";
     } else {
       document.getElementById("python").innerText = "python";
-      document.getElementById("python").style.color = "black";
+      document.getElementById("python").style.color = "#291814";
     }
     if (pfp8 == 4) {
       document.getElementById("javascript").innerHTML = "javascript&nbsp;L";
       document.getElementById("javascript").style.color = "#1D2B53";
     } else {
       document.getElementById("javascript").innerText = "javascript";
-      document.getElementById("javascript").style.color = "black";
+      document.getElementById("javascript").style.color = "#291814";
     }
   }
 
@@ -182,6 +203,7 @@
   }
 
   document.addEventListener('keydown', arrowkeys);
+  document.addEventListener('wheel', arrowkeys);
   document.addEventListener('keyup', resetkey);
 
   document.getElementById("pfp").addEventListener('mousedown', () => {
@@ -190,5 +212,13 @@
 
   document.getElementById("pfp").addEventListener('mouseup', () => {
     document.getElementById("pfp").style.cursor = 'url("cur/pointer_up.png"), default';
+  });
+
+  document.getElementById("static-guy").addEventListener('mousedown', () => {
+    document.getElementById("static-guy").style.cursor = 'url("cur/pointer_down.png"), default';
+  });
+
+  document.getElementById("static-guy").addEventListener('mouseup', () => {
+    document.getElementById("static-guy").style.cursor = 'url("cur/pointer_up.png"), default';
   });
 </script>
