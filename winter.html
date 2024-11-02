@@ -61,12 +61,12 @@
   }
 </style>
 
-<link rel="icon" href="img\\maybdev.2d.png">
+<link rel="icon" href="img\\winter\\maybdev.2d.png">
 
-<title>maybdev</title>
+<title>maybdev (winter)</title>
 
 <div class="center">
-  <img class="pfp" src="img\\maybdev.2d.png" draggable="false" id="pfp">
+  <img class="pfp" src="img\\winter\\maybdev.2d.png" draggable="false" id="pfp">
   <div>
     <p class="pft">maybdev L</p>
     <p class="pfst">hi, maybdev here..</p><br>
@@ -79,12 +79,12 @@
 </div>
 
 <div class="guytainer">
-  <img id="static-guy" src="img\\maybdev.2d.png" draggable="false">
+  <img id="static-guy" src="img\\winter\\maybdev.2d.png" draggable="false">
 </div>
 
-<script>
-  window.location.replace("winter"); // winter update
+<p class="pft" id="winter" style="cursor: url('cur\\pointer_up.png'), default;">R&nbsp;winter&nbsp;L</p>
 
+<script>
   document.addEventListener('contextmenu', function(event) {
       event.preventDefault();
   });
@@ -96,6 +96,33 @@
   downaudio.volume = 0.5;
   foot.volume = 1;
   foot.currentTime = 100;
+
+  left = false;
+  mute = 1;
+  setInterval(() => {
+      if (((window.innerWidth<document.documentElement.scrollWidth)==false)&(left==false)) {
+        document.getElementById("winter").innerHTML = ("&nbsp;" + document.getElementById("winter").innerHTML);
+        if (mute==0) {
+          upaudio.currentTime = 0;
+          upaudio.play();
+        }
+        if (window.innerWidth<document.documentElement.scrollWidth) {
+          document.getElementById("winter").innerHTML = document.getElementById("winter").innerHTML.substring(6);
+          left = true;
+        }
+      } else {
+        if (document.getElementById("winter").innerHTML.length>20) {
+          document.getElementById("winter").innerHTML = document.getElementById("winter").innerHTML.substring(6);
+          if (mute==0) {
+            downaudio.currentTime = 0;
+            downaudio.play();
+          }
+        } else {
+          left = false;
+        }
+      }
+  }, 256);
+
   pfp8 = 1;
   key = false;
   guyx = 80;
@@ -156,7 +183,7 @@
     document.getElementById("static-guy").style.left = `${guyx}px`;
     console.log(foot.currentTime)
     if (move == true) {
-      document.getElementById("static-guy").src = "img\\maybdev.2d." + ((Math.floor(parseFloat(new Date().getSeconds() + "." + new Date().getMilliseconds())*4)%2)+1) + ".png";
+      document.getElementById("static-guy").src = "img\\winter\\maybdev.2d." + ((Math.floor(parseFloat(new Date().getSeconds() + "." + new Date().getMilliseconds())*4)%2)+1) + ".png";
       if (foot.currentTime >= 0.5) {
         foot.currentTime = 0;
         foot.play();
@@ -200,7 +227,7 @@
 
   function resetkey() {
     key = false
-    document.getElementById("static-guy").src = "img\\maybdev.2d.png";
+    document.getElementById("static-guy").src = "img\\winter\\maybdev.2d.png";
   }
 
   document.addEventListener('keydown', arrowkeys);
@@ -221,5 +248,22 @@
 
   document.getElementById("static-guy").addEventListener('mouseup', () => {
     document.getElementById("static-guy").style.cursor = 'url("cur/pointer_up.png"), default';
+  });
+
+  document.getElementById("winter").addEventListener('mousedown', () => {
+    document.getElementById("winter").style.cursor = 'url("cur/pointer_down.png"), default';
+  });
+
+  document.getElementById("winter").addEventListener('mouseup', () => {
+    document.getElementById("winter").style.cursor = 'url("cur/pointer_up.png"), default';
+  });
+
+  document.getElementById("winter").addEventListener('click', function() {
+    mute = Math.abs(mute-1);
+    if (mute==0) {
+      document.getElementById("winter").style.color = "#111d35";
+    } else {
+      document.getElementById("winter").style.color = "#291814";
+    }
   });
 </script>
